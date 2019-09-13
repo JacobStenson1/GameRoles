@@ -12,12 +12,27 @@ var whiteListedApps = {
     'Grand Theft Auto V' : 'gta',
     'Quake Champions' : 'quake',
     'Quake Live™':'quake',
-    //:'',
-    //'':'',
-    //'':'',
-    //'////':'',
-    //'':'',
-
+    'Warframe' : 'warframe',
+    'Rust' : 'rust',
+    'Chivalry' : 'chivalry',
+    'Battlerite' : 'battlerite',
+    'Insurgency' : 'insurgency',
+    'For Honor' : 'forhonor',
+    'Hearts of Iron IV' : 'hoi4',
+    'Star Wars: Battlefront II' : 'battlefront',
+    'Star Wars: Battlefront' : 'battlefront',
+    'PAYDAY: The Heist' : 'payday',
+    'PAYDAY 2' : 'payday',
+    'DOOM' : 'doom',
+    'Forza Horizons 4' : 'forza',
+    'Terraria' : 'terraria',
+    'Duck Game' : 'duckgame',
+    'Apex Legends' : 'apex',
+    'Hytale' : 'hytale',
+    'Worms Revolution' : 'worms',
+    'Worms Armageddon' : 'worms',
+    'SCP: Secret Laboratory' : 'scp',
+    'Diablo III' : 'diablo',
 }
 
 
@@ -80,11 +95,11 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
                 if(!role) {
                     console.log("that role does not exist, creating it.")
                     // Waits till the role is created, then carries on.
-                    await newMember.guild.createRole({name:roleName, mentionable:true})   
+                    await newMember.guild.createRole({name:roleName, mentionable:true})
+                    // Find the role by the name
+                    var roleToAdd = newMember.guild.roles.find(x => x.name == roleName);
                 }
-
-                // Find the role by the name
-                var roleToAdd = role
+                
                 newMember.addRole(roleToAdd);
                 console.log("Gave "+newMember.displayName+" the "+roleToAdd.name+" role.")
             }
