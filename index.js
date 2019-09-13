@@ -12,7 +12,6 @@ var whiteListedApps = {
     "Grand Theft Auto V" : "gta",
     "Quake Champions" : "quake",
     "Quake Live™":"quake",
-
     "Warframe" : "warframe",
     "Rust" : "rust",
     "Chivalry" : "chivalry",
@@ -34,7 +33,6 @@ var whiteListedApps = {
     "Worms Armageddon" : "worms",
     "SCP: Secret Laboratory" : "scp",
     "Diablo III" : "diablo",
-
     "ARK: Survival Evolved" : "ark",
     "Minecraft" : "minecraft",
     "Grand Theft Auto V" : "gta",
@@ -96,18 +94,10 @@ bot.on('message', message=>{
             break;
         case 'add':
             whiteListedApps[args[1]] = args[2];
+            console.log("Added game: "+args[1]+" with role name: "+args[2])
             break;
-
         case 'info':
-            if(args[1] === 'author'){
-                message.channel.send("The author of this bot is Salazhar.")
-            }
-            else if(args[1] === 'test'){
-                message.channel.send("test. Yeah, thats all test does.");
-            }
-            else{
-                message.channel.send("Available info commands: author, test.")
-            }
+                message.channel.send("The author of this bot is Salazhar. See the github for this bot here: https://github.com/JacobStenson1/DiscordGameRoleBot")
             break;
     }
 })
@@ -134,9 +124,9 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
                     // Waits till the role is created, then carries on.
                     await newMember.guild.createRole({name:roleName, mentionable:true})
                     // Find the role by the name
-                    var roleToAdd = newMember.guild.roles.find(x => x.name == roleName);
+                    
                 }
-                roleToAdd = role
+                var roleToAdd = newMember.guild.roles.find(x => x.name == roleName);
                 newMember.addRole(roleToAdd);
                 console.log("Gave "+newMember.displayName+" the "+roleToAdd.name+" role.")
             }
@@ -144,7 +134,6 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
                 console.log(newMember.displayName+"'s Application is not whitelisted. ("+memberGameString+").")
             }
         }
-        
 	}
 });
 
