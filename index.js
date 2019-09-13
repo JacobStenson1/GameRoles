@@ -8,31 +8,71 @@ const prefix = '/';
 
 
 var whiteListedApps = {
-    'League of Legends': 'league',
-    'Grand Theft Auto V' : 'gta',
-    'Quake Champions' : 'quake',
-    'Quake Live™':'quake',
-    'Warframe' : 'warframe',
-    'Rust' : 'rust',
-    'Chivalry' : 'chivalry',
-    'Battlerite' : 'battlerite',
-    'Insurgency' : 'insurgency',
-    'For Honor' : 'forhonor',
-    'Hearts of Iron IV' : 'hoi4',
-    'Star Wars: Battlefront II' : 'battlefront',
-    'Star Wars: Battlefront' : 'battlefront',
-    'PAYDAY: The Heist' : 'payday',
-    'PAYDAY 2' : 'payday',
-    'DOOM' : 'doom',
-    'Forza Horizons 4' : 'forza',
-    'Terraria' : 'terraria',
-    'Duck Game' : 'duckgame',
-    'Apex Legends' : 'apex',
-    'Hytale' : 'hytale',
-    'Worms Revolution' : 'worms',
-    'Worms Armageddon' : 'worms',
-    'SCP: Secret Laboratory' : 'scp',
-    'Diablo III' : 'diablo',
+    "League of Legends": "league",
+    "Grand Theft Auto V" : "gta",
+    "Quake Champions" : "quake",
+    "Quake Live™":"quake",
+
+    "Warframe" : "warframe",
+    "Rust" : "rust",
+    "Chivalry" : "chivalry",
+    "Battlerite" : "battlerite",
+    "Insurgency" : "insurgency",
+    "For Honor" : "forhonor",
+    "Hearts of Iron IV" : "hoi4",
+    "STAR WARS Battlefront II" : "battlefront",
+    "STAR WARS Battlefront" : "battlefront",
+    "PAYDAY: The Heist" : "payday",
+    "PAYDAY 2" : "payday",
+    "DOOM" : "doom",
+    "Forza Horizons 4" : "forza",
+    "Terraria" : "terraria",
+    "Duck Game" : "duckgame",
+    "Apex Legends" : "apex",
+    "Hytale" : "hytale",
+    "Worms Revolution" : "worms",
+    "Worms Armageddon" : "worms",
+    "SCP: Secret Laboratory" : "scp",
+    "Diablo III" : "diablo",
+
+    "ARK: Survival Evolved" : "ark",
+    "Minecraft" : "minecraft",
+    "Grand Theft Auto V" : "gta",
+    "Grand Theft Auto IV" : "gta",
+    "Z1 Battle Royale" : "h1z1",
+    "Sid Meier's Civilization V" : "civ",
+    "Sid Meier's Civilization VI" : "civ",
+    "Call of Duty: Modern Warfare" : "cod",
+    "Call of Duty: Modern Warfare 3" : "cod",
+    "Call of Duty: Modern Warfare 2" : "cod",
+    "Call of Duty: Black Ops" : "cod",
+    "Call of Duty: Black Ops II" : "cod",
+    "Call of Duty: Black Ops 2" : "cod",
+    "Call of Duty: Black Ops III" : "cod",
+    "Call of Duty: Black Ops 3" : "cod",
+    "Call of Duty: Black Ops 4" : "cod",
+    "Call of Duty: Black Ops IIII" : "cod",
+    "Battlefield 3" : "battlefield",
+    "Battlefield 1" : "battlefield",
+    "Battlefield V" : "battlefield",
+    "PLAYERUNKNOWN'S BATTLEGROUNDS" : "pubg",
+    "Fortnite" : "fortnite",
+    "Destiny 2" : "destiny",
+    "Counter-Strike: Global Offensive" : "csgo",
+    "Runescape" : "runescape",
+    "Old School Runescape" : "runescape",
+    "SMITE" : "smite",
+    "Tom Clancy's Rainbow Six Siege" : "siege",
+    "Jurassic World Evolution" : "jwe",
+    "Overwatch" : "overwatch",
+    "Unturned" : "unturned",
+    "The Elder Scrolls Online" : "eso",
+    "Rocket League" : "rocketleague",
+    "Garry's Mod" : "gmod",
+    "Sea of Thieves" : "seaofthieves",
+    "No Man's Sky" : "nomanssky",
+    "Cities: Skylines" : "cities",
+
 }
 
 
@@ -55,10 +95,7 @@ bot.on('message', message=>{
             message.channel.send("google.com")
             break;
         case 'add':
-            //console.log(args[1])
-            //console.log(args[2])
-            //serverRoles[args[1]] = args[2]
-            //console.log(serverRoles)
+            whiteListedApps[args[1]] = args[2];
             break;
 
         case 'info':
@@ -99,7 +136,7 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
                     // Find the role by the name
                     var roleToAdd = newMember.guild.roles.find(x => x.name == roleName);
                 }
-                
+                roleToAdd = role
                 newMember.addRole(roleToAdd);
                 console.log("Gave "+newMember.displayName+" the "+roleToAdd.name+" role.")
             }
