@@ -1,0 +1,2 @@
+when someone opens a game that a role does not exist for, bot crashes
+

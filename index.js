@@ -1,12 +1,23 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+var fs = require('fs');
 
-const token = '';
-
+var tokenText = fs.readFileSync('./TokenFile.txt');
+const token = tokenText.toString();
 const prefix = '/';
 
-var serverRoles = {
-    'Grand Theft Auto V': 'gta'
+
+var whiteListedApps = {
+    'League of Legends': 'league',
+    'Grand Theft Auto V' : 'gta',
+    'Quake Champions' : 'quake',
+    'Quake Live™':'quake',
+    //:'',
+    //'':'',
+    //'':'',
+    //'////':'',
+    //'':'',
+
 }
 
 
@@ -29,12 +40,10 @@ bot.on('message', message=>{
             message.channel.send("google.com")
             break;
         case 'add':
-            console.log(args[1])
-            console.log(args[2])
-            serverRoles[args[1]] = args[2]
-
-            console.log(serverRoles)
-
+            //console.log(args[1])
+            //console.log(args[2])
+            //serverRoles[args[1]] = args[2]
+            //console.log(serverRoles)
             break;
 
         case 'info':
@@ -51,37 +60,39 @@ bot.on('message', message=>{
     }
 })
 
-bot.on('presenceUpdate', (oldMember,newMember) => {
-	if(oldMember.presence.game!==newMember.presence.game){ // If the user's activity (can be a game but also spotify) changes.
-        console.log("Someones presence changed.");
-        //console.log("oldMember "+oldMember.displayName+": "+oldMember.presence.game);
-        console.log("newMember "+newMember.displayName+": "+newMember.presence.game);
+bot.on('presenceUpdate', async (oldMember,newMember) => {
+    if(oldMember.presence.game !== newMember.presence.game){ // If the user's activity changes.
 
         if(newMember.presence.game != null){
-            console.log("The user is doing something");
-            newMemberGameString = newMember.presence.game.toString();
+            console.log("-- Someone's presence was updated. --")
+            memberGameString = newMember.presence.game.toString();
 
-            if(newMemberGameString != 'Spotify'){
-                console.log("They are not playing spotify");
-                var dictSearch = newMemberGameString
-
-                // If the game the person is playing is in the dictionary (This means that the name of the game is different to the role name)
-                if(dictSearch in serverRoles){
-                    // Search for the role name by the game name in the serverRoles dictionary
-                    var roleString = serverRoles[newMemberGameString];
-                    // Get the role to add to the member by searching the server for it by the name.
-                    var roleToAdd = newMember.guild.roles.find(role => role.name === roleString)
-                    console.log("test1")
-                }else{
-                    // Get the role name by the game name.
-                    var roleToAdd = newMember.guild.roles.find(role => role.name === newMemberGameString);
+            console.log(newMember.displayName+": "+memberGameString);
+    
+            // Do nothing if the user is using one of the blacklisted applications.
+            if(memberGameString in whiteListedApps){
+    
+                // Set roleName equal to the abreviated game name.
+                var roleName = whiteListedApps[memberGameString];
+    
+                var role = newMember.guild.roles.find(x => x.name == roleName);
+                // Search could not find the role by the specific game name (game name could be abreviated).
+                if(!role) {
+                    console.log("that role does not exist, creating it.")
+                    // Waits till the role is created, then carries on.
+                    await newMember.guild.createRole({name:roleName, mentionable:true})   
                 }
 
-                // Give the member the role.
-                console.log("Gave "+newMember.name+" the "+roleToAdd.name+" role.")
+                // Find the role by the name
+                var roleToAdd = role
                 newMember.addRole(roleToAdd);
+                console.log("Gave "+newMember.displayName+" the "+roleToAdd.name+" role.")
+            }
+            else{
+                console.log(newMember.displayName+"'s Application is not whitelisted. ("+memberGameString+").")
             }
         }
+        
 	}
 });
 
