@@ -51,6 +51,7 @@ var whiteListedApps = {
     "Call of Duty: Black Ops 4" : "cod",
     "Call of Duty: Black Ops IIII" : "cod",
     "Battlefield 3" : "battlefield",
+    "Battlefield 4" : "battlefield",
     "Battlefield 1" : "battlefield",
     "Battlefield V" : "battlefield",
     "PLAYERUNKNOWN'S BATTLEGROUNDS" : "pubg",
@@ -61,15 +62,20 @@ var whiteListedApps = {
     "Old School Runescape" : "runescape",
     "SMITE" : "smite",
     "Tom Clancy's Rainbow Six Siege" : "siege",
+    "Rainbow Six Siege" : "siege",
     "Jurassic World Evolution" : "jwe",
     "Overwatch" : "overwatch",
     "Unturned" : "unturned",
     "The Elder Scrolls Online" : "eso",
     "Rocket League" : "rocketleague",
-    "Garry's Mod" : "gmod",
+    "Garry's Mod" : "gmod", 
     "Sea of Thieves" : "seaofthieves",
     "No Man's Sky" : "nomanssky",
     "Cities: Skylines" : "cities",
+    "Guns of Icarus Online":"goi",
+    "Guns of Icarus Alliance":"goi",
+    "Borderlands 3" : "borderlands",
+    "Borderlands® 3  ": "borderlands"
 
 }
 
@@ -95,6 +101,7 @@ bot.on('message', message=>{
         case 'add':
             whiteListedApps[args[1]] = args[2];
             console.log("Added game: "+args[1]+" with role name: "+args[2])
+            message.reply("Added game: "+args[1]+" with role name: "+args[2])
             break;
         case 'info':
                 message.channel.send("The author of this bot is Salazhar. See the github for this bot here: https://github.com/JacobStenson1/DiscordGameRoleBot")
@@ -130,9 +137,7 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
             if(!role) {
                 console.log("that role does not exist, creating it.")
                 // Waits till the role is created, then carries on.
-                await newMember.guild.createRole({name:roleName, mentionable:true})
-                // Find the role by the name
-                
+                await newMember.guild.createRole({name:roleName, mentionable:true})                
             }
             var roleToAdd = newMember.guild.roles.find(x => x.name == roleName);
 
@@ -142,6 +147,8 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
                 // If they dont have the role...
                 newMember.addRole(roleToAdd);
                 console.log("Gave "+newMember.displayName+" the "+roleToAdd.name+" role.")
+            }else{
+                console.log(newMember.displayName+" already has the role.")
             }
                 
         }else{
