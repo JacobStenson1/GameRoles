@@ -13,7 +13,6 @@ bot.on('ready',function(){
 })
 
 bot.on('message', message=>{
-
     let args = message.content.substring(prefix.length).split("_");
 
     // 0 is base command -- !ping help -- (ping in this case)
@@ -30,7 +29,7 @@ bot.on('message', message=>{
             message.reply("Added game: "+args[1]+" with role name: "+args[2])
             break;
         case 'info':
-                message.channel.send("The author of this bot is Salazhar. See the github for this bot here: https://github.com/JacobStenson1/DiscordGameRoleBot")
+            message.channel.send("The author of this bot is Salazhar. See the github for this bot here: https://github.com/JacobStenson1/DiscordGameRoleBot")
             break;
     }
 })
@@ -51,13 +50,11 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
 
         // See if the application the user is running is whitelisted.
         if(memberGameString in whiteListedApps){
-
             console.log("-- Someone's presence was updated. --")
             console.log(newMember.displayName+": "+memberGameString);
-    
+
             // Set roleName equal to the abreviated game name.
             var roleName = whiteListedApps[memberGameString];
-
             var role = newMember.guild.roles.find(x => x.name == roleName);
             // Search could not find the role by the specific game name (game name could be abreviated).
             if(!role) {
@@ -76,14 +73,10 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
             }else{
                 console.log(newMember.displayName+" already has the role.")
             }
-                
         }else{
             console.log(newMember.displayName+"'s Application is not whitelisted. ("+memberGameString+").")
         }
-    
     }
-    
 });
-
 
 bot.login(token);
