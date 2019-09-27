@@ -1,11 +1,8 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
-var fs = require('fs');
 
-var tokenText = fs.readFileSync('./TokenFile.txt');
-const token = tokenText.toString();
+var token = require('./TokenFile.json');
 const prefix = '/';
-
 
 var whiteListedApps = {
     "League of Legends": "league",
