@@ -1,10 +1,10 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
-var token = require('./TokenFile.json');
+var tokenFile = require('./TokenFile.json');
 const prefix = '/';
 
-var whiteListedApps = require("whitelist.json");
+var whiteListedApps = require("./whitelist.json");
 
 //Calls when the bot first comes online
 bot.on('ready',function(){
@@ -50,9 +50,6 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
 
         // See if the application the user is running is whitelisted.
         if(memberGameString in whiteListedApps){
-            console.log("-- Someone's presence was updated. --")
-            console.log(newMember.displayName+": "+memberGameString);
-
             // Set roleName equal to the abreviated game name.
             var roleName = whiteListedApps[memberGameString];
             var role = newMember.guild.roles.find(x => x.name == roleName);
@@ -70,13 +67,9 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
                 // If they dont have the role...
                 newMember.addRole(roleToAdd);
                 console.log("Gave "+newMember.displayName+" the "+roleToAdd.name+" role.")
-            }else{
-                console.log(newMember.displayName+" already has the role.")
             }
-        }else{
-            console.log(newMember.displayName+"'s Application is not whitelisted. ("+memberGameString+").")
         }
     }
 });
 
-bot.login(token);
+bot.login(tokenFile.token);
