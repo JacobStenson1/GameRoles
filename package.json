@@ -2,13 +2,18 @@
   "name": "discord-bot",
   "version": "1.0.0",
   "description": "Learning to make a discord bot.",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "./dist/index.js",
+    "compile": "tsc"
   },
   "author": "Salazhar",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.8",
+    "typescript": "^3.6.3"
   }
 }
