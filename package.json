@@ -2,7 +2,7 @@
   "name": "discord-bot",
   "version": "1.0.0",
   "description": "Learning to make a discord bot.",
-  "main": "dist/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "start": "./dist/index.js",
     "compile": "tsc"
