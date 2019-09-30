@@ -29,7 +29,7 @@ bot.on('message', async (message: Discord.Message) => {
 
 bot.on('presenceUpdate', async (oldMember: Discord.GuildMember, newMember: Discord.GuildMember) => {
     // If the game has changed...
-    if (!oldMember.user.bot) return;
+    if (oldMember.user.bot) return;
     if (oldMember.presence.game !== newMember.presence.game) {
         // If the presence is nothing, return. Or if the member has the bot role.
         if ((newMember.presence.game == null)) return;
