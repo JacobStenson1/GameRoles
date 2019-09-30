@@ -1,10 +1,36 @@
 const Discord = require('discord.js');
+const jsonfile = require('jsonfile');
+
 const bot = new Discord.Client();
+
+// The minimum allowable time between saves (milliseconds)
+const minumumSaveInterval = 10000;
+// Whether or not the whitlist is saved
+var saved = true;
 
 var tokenFile = require('./TokenFile.json');
 const prefix = '/';
 
 var whiteListedApps = require("./whitelist.json");
+
+/**
+ * Limits how often saves can happen to avoid abuse
+ */
+function scheduleSave(){
+    if(saved){
+        setTimeout(save, minumumSaveInterval);
+        saved = false;
+    }
+}
+/**
+ * Saves the whitelist
+ */
+function save(){
+    jsonfile.writeFile("./whitelist.json", whiteListedApps, { spaces: 2, EOL: '\r\n' }, function(err){
+        if (err) throw(err);
+    })
+    saved = true;
+}
 
 //Calls when the bot first comes online
 bot.on('ready',function(){
@@ -29,8 +55,12 @@ bot.on('message', message=>{
             if ((!gameName) && (!roleToAdd)){
                 message.reply("Please enter the correct command (/add [gameName] [role name]")
             }else{
+                // Apply changes
+                whiteListedApps[gameName] = roleToAdd;
                 console.log("Added game: "+gameName+" with role name: "+roleToAdd)
                 message.reply("Added game: "+gameName+" with role name: "+roleToAdd)
+                // Save
+                scheduleSave();
             }
             break;
         case 'info':
@@ -42,6 +72,7 @@ bot.on('message', message=>{
 bot.on('presenceUpdate', async (oldMember,newMember) => {
     // If the game has changed...
     if(oldMember.presence.game !== newMember.presence.game){
+        // TODO: fix bug
         botsRole = newMember.guild.roles.find(x => x.name == 'bots')
         hasBotsRole = newMember.roles.has(botsRole.id)
 
