@@ -1,10 +1,36 @@
 const Discord = require('discord.js');
+const jsonfile = require('jsonfile');
+
 const bot = new Discord.Client();
 
-var token = require('./TokenFile.json');
+// The minimum allowable time between saves (milliseconds)
+const minumumSaveInterval = 10000;
+// Whether or not the whitlist is saved
+var saved = true;
+
+var tokenFile = require('./TokenFile.json');
 const prefix = '/';
 
-var whiteListedApps = require("whitelist.json");
+var whiteListedApps = require("./whitelist.json");
+
+/**
+ * Limits how often saves can happen to avoid abuse
+ */
+function scheduleSave(){
+    if(saved){
+        setTimeout(save, minumumSaveInterval);
+        saved = false;
+    }
+}
+/**
+ * Saves the whitelist
+ */
+function save(){
+    jsonfile.writeFile("./whitelist.json", whiteListedApps, { spaces: 2, EOL: '\r\n' }, function(err){
+        if (err) throw(err);
+    })
+    saved = true;
+}
 
 //Calls when the bot first comes online
 bot.on('ready',function(){
@@ -13,7 +39,7 @@ bot.on('ready',function(){
 })
 
 bot.on('message', message=>{
-    let args = message.content.substring(prefix.length).split("_");
+    let args = message.content.substring(prefix.length).split(" ");
 
     // 0 is base command -- !ping help -- (ping in this case)
     switch(args[0]){
@@ -24,9 +50,18 @@ bot.on('message', message=>{
             message.channel.send("google.com")
             break;
         case 'add':
-            whiteListedApps[args[1]] = args[2];
-            console.log("Added game: "+args[1]+" with role name: "+args[2])
-            message.reply("Added game: "+args[1]+" with role name: "+args[2])
+            var roleToAdd = args.pop()
+            var gameName = args.slice(1,args.length).join(" ")
+            if ((!gameName) && (!roleToAdd)){
+                message.reply("Please enter the correct command (/add [gameName] [role name]")
+            }else{
+                // Apply changes
+                whiteListedApps[gameName] = roleToAdd;
+                console.log("Added game: "+gameName+" with role name: "+roleToAdd)
+                message.reply("Added game: "+gameName+" with role name: "+roleToAdd)
+                // Save
+                scheduleSave();
+            }
             break;
         case 'info':
             message.channel.send("The author of this bot is Salazhar. See the github for this bot here: https://github.com/JacobStenson1/DiscordGameRoleBot")
@@ -37,6 +72,7 @@ bot.on('message', message=>{
 bot.on('presenceUpdate', async (oldMember,newMember) => {
     // If the game has changed...
     if(oldMember.presence.game !== newMember.presence.game){
+        // TODO: fix bug
         botsRole = newMember.guild.roles.find(x => x.name == 'bots')
         hasBotsRole = newMember.roles.has(botsRole.id)
 
@@ -50,9 +86,6 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
 
         // See if the application the user is running is whitelisted.
         if(memberGameString in whiteListedApps){
-            console.log("-- Someone's presence was updated. --")
-            console.log(newMember.displayName+": "+memberGameString);
-
             // Set roleName equal to the abreviated game name.
             var roleName = whiteListedApps[memberGameString];
             var role = newMember.guild.roles.find(x => x.name == roleName);
@@ -70,13 +103,9 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
                 // If they dont have the role...
                 newMember.addRole(roleToAdd);
                 console.log("Gave "+newMember.displayName+" the "+roleToAdd.name+" role.")
-            }else{
-                console.log(newMember.displayName+" already has the role.")
             }
-        }else{
-            console.log(newMember.displayName+"'s Application is not whitelisted. ("+memberGameString+").")
         }
     }
 });
 
-bot.login(token);
+bot.login(tokenFile.token);
