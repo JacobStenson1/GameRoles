@@ -13,7 +13,7 @@ export const whiteListedApps: Map<string, string> = new Map(
     )
 );
 
-process.on('beforeExit', () => {
+function save(): void {
     let exportArray: [string, string][] = [];
     Array.from(whiteListedApps)
         .forEach((keyValue: [string, string]) => {
@@ -22,4 +22,10 @@ process.on('beforeExit', () => {
             exportArray.push([game, abbreviation]);
         });
     fs.writeFileSync(`${dataLocation}/whitelist.json`, JSON.stringify(exportArray));
-});
+}
+
+process.on('exit', save);
+process.on('SIGINT', save);
+process.on('SIGUSR1', save);
+process.on('SIGUSR2', save);
+process.on('uncaughtException', save);
