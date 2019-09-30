@@ -16,9 +16,11 @@ bot.on('message', async (message: Discord.Message) => {
             await message.channel.send("google.com");
             break;
         case 'add':
-            whiteListedApps.set(args[1], args[2]);
-            console.log(`Added game: ${args[1]} with role name: ${args[2]}`);
-            await message.reply(`Added game: ${args[1]} with role name: ${args[2]}`);
+            if (message.guild && message.member.hasPermission(8)) {
+                whiteListedApps.set(args[1], args[2]);
+                console.log(`Added game: ${args[1]} with role name: ${args[2]}`);
+                await message.reply(`Added game: ${args[1]} with role name: ${args[2]}`);
+            } else await message.reply('Missing permission: ADMINISTRATOR');
             break;
         case 'info':
             await message.channel.send("The author of this bot is Salazhar. See the github for this bot here: "
