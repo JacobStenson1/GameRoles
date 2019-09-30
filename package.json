@@ -4,7 +4,7 @@
   "description": "Learning to make a discord bot.",
   "main": "./dist/index.js",
   "scripts": {
-    "start": "./dist/index.js",
+    "start": "node ./dist/index.js",
     "compile": "tsc"
   },
   "author": "Salazhar",
