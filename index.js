@@ -72,9 +72,14 @@ bot.on('message', message=>{
 bot.on('presenceUpdate', async (oldMember,newMember) => {
     // If the game has changed...
     if(oldMember.presence.game !== newMember.presence.game){
-        // TODO: fix bug
         botsRole = newMember.guild.roles.find(x => x.name == 'bots')
-        hasBotsRole = newMember.roles.has(botsRole.id)
+        
+        hasBotsRole = false;
+
+        // If found the bot role on the member (indicating they are a bot)
+        if (botsRole){
+            hasBotsRole = newMember.roles.has(botsRole.id)
+        }
 
         // If the presence is nothing, return. Or if the member has the bot role.
         if((newMember.presence.game == null) || (hasBotsRole) || (newMember.presence.game == 'Spotify')){
