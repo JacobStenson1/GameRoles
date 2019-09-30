@@ -13,7 +13,7 @@ bot.on('ready',function(){
 })
 
 bot.on('message', message=>{
-    let args = message.content.substring(prefix.length).split("_");
+    let args = message.content.substring(prefix.length).split(" ");
 
     // 0 is base command -- !ping help -- (ping in this case)
     switch(args[0]){
@@ -24,9 +24,14 @@ bot.on('message', message=>{
             message.channel.send("google.com")
             break;
         case 'add':
-            whiteListedApps[args[1]] = args[2];
-            console.log("Added game: "+args[1]+" with role name: "+args[2])
-            message.reply("Added game: "+args[1]+" with role name: "+args[2])
+            var roleToAdd = args.pop()
+            var gameName = args.slice(1,args.length).join(" ")
+            if ((!gameName) && (!roleToAdd)){
+                message.reply("Please enter the correct command (/add [gameName] [role name]")
+            }else{
+                console.log("Added game: "+gameName+" with role name: "+roleToAdd)
+                message.reply("Added game: "+gameName+" with role name: "+roleToAdd)
+            }
             break;
         case 'info':
             message.channel.send("The author of this bot is Salazhar. See the github for this bot here: https://github.com/JacobStenson1/DiscordGameRoleBot")

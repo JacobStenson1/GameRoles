@@ -9,6 +9,7 @@
   "author": "Salazhar",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "^11.5.1"
+    "discord.js": "^11.5.1",
+    "jsonfile": "^5.0.0"
   }
 }
