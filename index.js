@@ -87,7 +87,7 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
         }
         
         var memberGameString = newMember.presence.game.toString();
-        console.log(newMember.displayName+" : "+ memberGameString)
+        //console.log(newMember.displayName+" : "+ memberGameString)
 
         // See if the application the user is running is whitelisted.
         if(memberGameString in whiteListedApps){
