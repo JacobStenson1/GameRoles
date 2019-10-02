@@ -24,7 +24,6 @@
   "SCP: Secret Laboratory": "scp",
   "Diablo III": "diablo",
   "ARK: Survival Evolved": "ark",
-  "Minecraft": "minecraft",
   "Grand Theft Auto V": "gta",
   "Grand Theft Auto IV": "gta",
   "Z1 Battle Royale": "h1z1",
@@ -65,5 +64,6 @@
   "Guns of Icarus Online": "goi",
   "Guns of Icarus Alliance": "goi",
   "Borderlands 3": "borderlands",
-  "Borderlands® 3  ": "borderlands"
+  "Borderlands® 3  ": "borderlands",
+  "Minecraft": "minecraft"
 }
