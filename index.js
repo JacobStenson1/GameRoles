@@ -85,7 +85,7 @@ bot.on('message', message=>{
         case 'addmygame':
             var hasPerms = message.member.roles.has(moveRole.id)
             if (!args[1]){
-                message.reply("Please provide a role name.")
+                message.reply("Please provide a role name after the command.")
                 break;
             }
             if (hasPerms){
@@ -183,23 +183,26 @@ bot.on('message', message=>{
             var messageContent
             switch(helpWith){
                 case 'website':
-                    messageContent = '```\n/website \nThis command will display a link to the GitHub repository for this bot.```'
+                    messageContent = '```\n/website \nDisplays a link to the GitHub repository for this bot.```'
                     break;
                 case 'add':
-                    messageContent = '```\n/add \nThis command allows you to add a game to the bots whitelist.\nUse in the form /add [gamename] [role name].\nIf the bot cannot find the role in your server, it will add it automatically.```'
+                    messageContent = '```\n/add \nAdds a game to the bots whitelist.\nUse in the form /add [gamename] [role name].\nIf the bot cannot find the role in your server, it will add it automatically.```'
                     break;
                 case 'addmygame':
-                    messageContent = '```\n/addmygame \nThis command will pull the game you are playing and add the game to the whitelist.\nUse in the form /addmygame [role name].\nIf the bot cannot find the role in your server, it will add it automatically.```'
+                    messageContent = '```\n/addmygame \nPulls the game you are playing and add the game to the whitelist.\nUse in the form /addmygame [role name].\nIf the bot cannot find the role in your server, it will add it automatically.```'
                     break;
                 case 'delete':
-                    messageContent = '```\n/delete \nThis command will display a link to the GitHub repository for this bot.```'
+                    messageContent = '```\n/add \nRemoves a game to the bots whitelist.\nUse in the form /add [gamename] [role name].```'
                     break;
                 case 'undo':
-                    messageContent = '```\n/undo \nThis command will display a link to the GitHub repository for this bot.```'
+                    messageContent = '```\n/undo \nUndoes the previous command.```'
                     break;
                 case 'games':
-                    messageContent = '```\n/games \nThis command will display a link to the GitHub repository for this bot.```'
+                    messageContent = '```\n/games \nDisplays a list of all the games in the whitelist.\nThis will be in the form: [game] [role].```'
                     break;
+            }
+            if (!messageContent){
+                messageContent = '```\n/help \nThis command allows you to view a little help section for each command.\nUse this in the form /help [command].\nCommands available are: website, add, addmygame, delete, undo, games.```'
             }
             message.channel.send(messageContent)
             break;
