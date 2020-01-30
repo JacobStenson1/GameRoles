@@ -102,7 +102,7 @@ bot.on('message', message=>{
                     console.log("Added game: "+gameNameAdd+" with role name: "+roleToAdd)
                     message.reply("Added game: "+gameNameAdd+" with role name: "+roleToAdd)
                     objectAdded = {'Game' : gameNameAdd, 'Role' :roleToAdd}
-                    previousAction = 'add'
+                    previousAction = 'addmygame'
                     // Save
                     scheduleSave();
                 }
@@ -236,7 +236,7 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
             var role = newMember.guild.roles.find(x => x.name == roleName);
             // Search could not find the role by the specific game name (game name could be abreviated).
             if(!role) {
-                console.log("that role does not exist, creating it.")
+                console.log(roleName+" does not exist, creating it.")
                 // Waits till the role is created, then carries on.
                 await newMember.guild.createRole({name:roleName, mentionable:true})                
             }
