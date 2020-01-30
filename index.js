@@ -236,9 +236,10 @@ bot.on('presenceUpdate', async (oldMember,newMember) => {
             var role = newMember.guild.roles.find(x => x.name == roleName);
             // Search could not find the role by the specific game name (game name could be abreviated).
             if(!role) {
-                console.log(roleName+" does not exist, creating it.")
+                console.log(roleName+" does not exist in "+newMember.guild.name+". creating it.")
                 // Waits till the role is created, then carries on.
-                await newMember.guild.createRole({name:roleName, mentionable:true})                
+                await newMember.guild.createRole({name:roleName, mentionable:true})
+                console.log("added role: "+roleName)
             }
             var roleToAdd = newMember.guild.roles.find(x => x.name == roleName);
 
