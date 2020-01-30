@@ -50,6 +50,7 @@ bot.on('message', message=>{
 
     // 0 is base command -- !ping help -- (ping in this case)
     switch(args[0]){
+        // --- DO COMMANDS ---
         case 'ping':
             message.channel.send("pong!");
             break;
@@ -63,6 +64,35 @@ bot.on('message', message=>{
             if (hasPerms){
                 var roleToAdd = args.pop()
                 var gameNameAdd = args.slice(1,args.length).join(" ")
+                if ((!gameNameAdd) && (!roleToAdd)){
+                    message.reply("Please enter the correct command (/add [gameName] [role name]")
+                }else{
+                    // Apply changes
+                    whiteListedApps[gameNameAdd] = roleToAdd;
+                    //var gameJustAdded = gameName
+                    console.log("Added game: "+gameNameAdd+" with role name: "+roleToAdd)
+                    message.reply("Added game: "+gameNameAdd+" with role name: "+roleToAdd)
+                    objectAdded = {'Game' : gameNameAdd, 'Role' :roleToAdd}
+                    previousAction = 'add'
+                    // Save
+                    scheduleSave();
+                }
+            }else{
+                message.reply("You do not have sufficient permissions to perform that command.")
+            }
+            break;
+
+        case 'addmygame':
+            var hasPerms = message.member.roles.has(moveRole.id)
+            if (!args[1]){
+                message.reply("Please provide a role name.")
+                break;
+            }
+            if (hasPerms){
+                var roleToAdd = args.pop()
+                // Get the game the user is playing
+                gameNameAdd = message.member.presence.game.toString();
+
                 if ((!gameNameAdd) && (!roleToAdd)){
                     message.reply("Please enter the correct command (/add [gameName] [role name]")
                 }else{
@@ -128,7 +158,7 @@ bot.on('message', message=>{
         case 'games':
             var hasPerms = message.member.roles.has(moveRole.id)
             if (hasPerms){
-                var stringToSend = "-- Printing the whitelist of games -- \n"
+                var stringToSend = "-- Here is the whitelist of games (game : role) -- \n"
                 var whiteListedAppsLength = Object.keys(whiteListedApps).length
 
                 for (i = 0; i < whiteListedAppsLength; i++) {
@@ -145,6 +175,33 @@ bot.on('message', message=>{
 
         case 'info':
             message.channel.send("The author of this bot is Salazhar. See the GitHub for this bot here: https://github.com/JacobStenson1/GameRoles")
+            break;
+
+        // --- DO COMMANDS ---
+        case 'help':
+            var helpWith = args.pop()
+            var messageContent
+            switch(helpWith){
+                case 'website':
+                    messageContent = '```\n/website \nThis command will display a link to the GitHub repository for this bot.```'
+                    break;
+                case 'add':
+                    messageContent = '```\n/add \nThis command allows you to add a game to the bots whitelist.\nUse in the form /add [gamename] [role name].\nIf the bot cannot find the role in your server, it will add it automatically.```'
+                    break;
+                case 'addmygame':
+                    messageContent = '```\n/addmygame \nThis command will pull the game you are playing and add the game to the whitelist.\nUse in the form /addmygame [role name].\nIf the bot cannot find the role in your server, it will add it automatically.```'
+                    break;
+                case 'delete':
+                    messageContent = '```\n/delete \nThis command will display a link to the GitHub repository for this bot.```'
+                    break;
+                case 'undo':
+                    messageContent = '```\n/undo \nThis command will display a link to the GitHub repository for this bot.```'
+                    break;
+                case 'games':
+                    messageContent = '```\n/games \nThis command will display a link to the GitHub repository for this bot.```'
+                    break;
+            }
+            message.channel.send(messageContent)
             break;
     }
 })
